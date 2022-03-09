@@ -1,25 +1,24 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <form action="">
-      Search By date
-      <input type="date" name="date" max="" />
+  <nav class="navbar navbar-expand-lg navbar-dark bg-secondary px-3">
+    <form @submit.prevent="searchByDate">
+      <input v-model="date" type="date" name="date" max="" />
+      <button class="rounded">GO!</button>
     </form>
+
+    <b class="p-2 col-6 text-end fs-1">ASTRONOMY DAILY 🔭</b>
   </nav>
 </template>
 
 <script>
-import { AuthService } from "../services/AuthService";
-import { AppState } from "../AppState";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { apodsService } from "../services/ApodsService";
 export default {
   setup() {
+    const date = ref("");
     return {
-      user: computed(() => AppState.user),
-      async login() {
-        AuthService.loginWithPopup();
-      },
-      async logout() {
-        AuthService.logout({ returnTo: window.location.origin });
+      date,
+      searchByDate() {
+        apodsService.searchByDate(date.value);
       },
     };
   },
